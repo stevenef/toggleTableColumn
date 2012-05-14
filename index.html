@@ -1,16 +1,36 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Toggle Table Column Demo</title>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+	
+        <script type="text/javascript" src="http://localhost/vqc/public/js/jquery-ui-1.8.18.custom.min.js"></script>  
+        <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+        <script type="text/javascript" src="http://localhost/vqc/public/js/prettify.js"></script>                                   <!-- PRETTIFY -->
+        <script type="text/javascript" src="http://localhost/vqc/public/js/kickstart.js"></script>                                  <!-- KICKSTART -->
+        <script type="text/javascript" src="http://localhost/vqc/public/js/utility.js"></script>  
+        <link rel="stylesheet" type="text/css" href="http://localhost/vqc/public/css/kickstart.css" media="all" />                  <!-- KICKSTART -->
+        <link rel="stylesheet" type="text/css" href="http://localhost/vqc/public/css/style.css" media="all" />                      <!-- CUSTOM STYLES -->
+        <link rel="stylesheet" type="text/css" href="http://localhost/vqc/public/css/jquery-ui-1.8.18.custom.css" media="all" />
+        <link rel="shortcut icon" href="http://localhost/vqc/public/img/favicon.ico" type="image/x-icon">
+	
 	<script>
 	
 	</script>
 </head>
 <body>
+<style>
 
+#column{
+	position:absolute;
+	z-index:10;
+	background-color:white;
+	border:1px solid black;
+	width:132px;
+	
+}
+</style>
 <script type="text/javascript">
 
 $(document).ready(function() {
@@ -34,13 +54,31 @@ $(document).ready(function() {
             $('td:nth-child('+pos+')').toggle();
         });
     });
+	$('table th:last-child').bind('click',function(e){
+		var _left = $(this).position().left;
+
+		$('#column').animate({
+			left:_left,
+			top:$('table tr:eq(1) td:last-child').position().top,
+		},0);
+		$('#column').toggle();
+		
+		return false;
+	});
 });
 
 </script>    
 
-<div id="column"></div>
 
-<table border="1">
+
+ <a id="top-of-page"></a>
+        <div id="wrap" class="clearfix">
+         
+            <div class="col_12">
+
+<div id="column" style="display:none"></div>
+
+<table border="1" class="sortable" id="benutzer-tabelle">
     <thead>
         <tr>
             <th>Name</th>
@@ -56,7 +94,7 @@ $(document).ready(function() {
             <td>100.00</td>
             <td>Tag</td>
             <td>leer</td>
-            <td>edit</td>
+            <td>edit2</td>
         </tr>
         <tr>
             <td>Artikel 2</td>
@@ -88,7 +126,13 @@ $(document).ready(function() {
         </tr>
     </tbody>
 </table>
-
-	
-</body>
+</div>
+            <!-- ===================================== START FOOTER ===================================== -->
+            <div class="clear"></div>
+            <div id="footer">
+                &copy; Copyright 2012 Verein zur Qualitäts-Controlle am Bau e.V. Diese WebApp wurde von <a href="http://www.scitotec.com">Scitotec GmbH</a> erstellt.
+                <a id="link-top" href="#top-of-page">Top</a>
+            </div>
+        </div><!-- END WRAP -->
+    </body>
 </html>
