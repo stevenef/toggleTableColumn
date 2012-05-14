@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Toggle Table Column Demo</title>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+	<script>
+	
+	</script>
+</head>
+<body>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+    // auslesen der Spalten und definieren der Checkboxen
+    var alltr=jQuery('table tr');
+    jQuery(alltr).each( function(index,value){
+      var allth=jQuery(this).find('th');
+      var container2 = "";
+      $(allth).each(function(cindex,value){
+         container2 += '<input id="checkbox_'+index+'_'+cindex+'" type="checkbox" checked="checked" /><label>'+$(this).text()+'</label><br />';
+         $('#column').html(container2);
+      });
+    });
+    // ein und ausblenden der Spalten
+    var allCBox = $('#column input');
+    $(allCBox).each(function(cindex,value) {
+        var pos = cindex+1;
+        //console.log(cindex+1);
+        $(this).click(function (){
+            $('th:nth-child('+pos+')').toggle();
+            $('td:nth-child('+pos+')').toggle();
+        });
+    });
+});
+
+</script>    
+
+<div id="column"></div>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Preis</th>
+            <th>Einheit</th>
+            <th>Beschreibung</th>
+            <th>--</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Artikel 1</td>
+            <td>100.00</td>
+            <td>Tag</td>
+            <td>leer</td>
+            <td>edit</td>
+        </tr>
+        <tr>
+            <td>Artikel 2</td>
+            <td>100.00</td>
+            <td>Tag</td>
+            <td>leer</td>
+            <td>edit</td>
+        </tr>
+        <tr>
+            <td>Artikel 3</td>
+            <td>100.00</td>
+            <td>Tag</td>
+            <td>leer</td>
+            <td>edit</td>
+        </tr>
+        <tr>
+            <td>Artikel 4</td>
+            <td>100.00</td>
+            <td>Tag</td>
+            <td>leer</td>
+            <td>edit</td>
+        </tr>
+        <tr>
+            <td>Artikel 5</td>
+            <td>100.00</td>
+            <td>Tag</td>
+            <td>leer</td>
+            <td>edit</td>
+        </tr>
+    </tbody>
+</table>
+
+	
+</body>
+</html>
