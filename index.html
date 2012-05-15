@@ -9,7 +9,9 @@
         <script type="text/javascript" src="js/prettify.js"></script>                                   <!-- PRETTIFY -->
         <script type="text/javascript" src="js/kickstart.js"></script>                                  <!-- KICKSTART -->
         <script type="text/javascript" src="js/utility.js"></script>  
-        <link rel="stylesheet" type="text/css" href="css/kickstart.css" media="all" />                  <!-- KICKSTART -->
+		<script type="text/javascript" src="js/colResizable-1.3.min.js"></script> 							<!-- Table Resizable -->
+        <link rel="stylesheet" type="text/css" href="css/kickstart.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="css/main.css" media="all" /> 		<!-- KICKSTART -->
         <link rel="stylesheet" type="text/css" href="css/style.css" media="all" />                      <!-- CUSTOM STYLES -->
         <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.8.18.custom.css" media="all" />
 	<script>
@@ -29,9 +31,15 @@
 	padding:5px;
 }
 </style>
+
+
 <script type="text/javascript">
 
 $(document).ready(function() {
+
+
+
+
     // auslesen der Spalten und definieren der Checkboxen
     var alltr=jQuery('table tr');
     jQuery(alltr).each( function(index,value){
@@ -69,80 +77,132 @@ $(document).ready(function() {
 	$('#column ul').bind('mouseout', function(){
 		if(timer)
 			clearTimeout(timer);
-		timer = setTimeout("$('#column').toggle()",1000);
+		timer = setTimeout("$('#column').toggle()",100);
 	});
 	$('#column ul').bind('mouseover', function(){
 		clearTimeout(timer);
 	});
+	
+	
+
+	
+
+	// Default werte für Tabs
+	var _checked = new Array(0,1);
+	
+	var _obj = new Object();
+	if(localStorage){
+		if(localStorage.getItem('vqc')){
+			var myJson = localStorage.getItem('vqc');
+			 _obj = jQuery.parseJSON(myJson);
+		}
+	}
+	if(_obj['Benutzer_Controller']){
+		_checked = new Array();
+		for(var index in _obj['Benutzer_Controller']){
+			_checked.push(_obj['Benutzer_Controller'][index]);
+		}
+	}
+	for(var i = 0 ; i< ($('#column ul li input').length-1);i++){
+		var _temp = true;
+		for(var j = 0 ;j<_checked.length;j++)
+			if(i==_checked[j]) _temp = false;
+		if(_temp)
+			$('#checkbox_0_'+i).trigger('click');
+	}
+	$('#column ul li input').bind('click',function(){
+	
+		$("#benutzer-tabelle").colResizable({disable:true});
+		$("#benutzer-tabelle").colResizable();
+		$("table").trigger("resize");
+		for(var i = 0; i < ($('#column ul li input').length-1);i++){
+			var _id = $('#column ul li input:eq('+i+')').attr('id');
+			if(!_obj['Benutzer_Controller'])
+				_obj['Benutzer_Controller'] = new Object();
+			if($('#column ul li input:eq('+i+')').attr('checked')){
+				_obj['Benutzer_Controller'][_id]=i;
+			}else{
+				delete _obj['Benutzer_Controller'][_id];
+			}
+		}
+		var _JSON = JSON.stringify(_obj);
+		if(localStorage){
+			localStorage.setItem('vqc',_JSON);
+		}
+	});
+	
+		
+	$("#benutzer-tabelle").colResizable();
 
 });
 
-</script>    
+
+</script> 
+
+
  <a id="top-of-page"></a>
-        <div id="wrap" class="clearfix">
-         
-            <div class="col_12">
+ <div id="wrap" class="clearfix" style="overflow:auto">
+    <div class="col_12">
+		<div id="column" style="display:none;">
+			<ul class="menu vertical">
+			</ul>
+		</div>
 
-<div id="column" style="display:none">
-	<ul class="menu vertical">
-	</ul>
-</div>
-
-<table border="1" class="sortable" id="benutzer-tabelle">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Preis</th>
-            <th>Einheit</th>
-            <th>Beschreibung</th>
-            <th style="width:112px;"><span class="icon darkgray" data-icon="Z"></span></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Artikel 1</td>
-            <td>100.00</td>
-            <td>Tag</td>
-            <td>leer</td>
-            <td>edit2</td>
-        </tr>
-        <tr>
-            <td>Artikel 2</td>
-            <td>100.00</td>
-            <td>Tag</td>
-            <td>leer</td>
-            <td>edit</td>
-        </tr>
-        <tr>
-            <td>Artikel 3</td>
-            <td>100.00</td>
-            <td>Tag</td>
-            <td>leer</td>
-            <td>edit</td>
-        </tr>
-        <tr>
-            <td>Artikel 4</td>
-            <td>100.00</td>
-            <td>Tag</td>
-            <td>leer</td>
-            <td>edit</td>
-        </tr>
-        <tr>
-            <td>Artikel 5</td>
-            <td>100.00</td>
-            <td>Tag</td>
-            <td>leer</td>
-            <td>edit</td>
-        </tr>
-    </tbody>
-</table>
-</div>
+		<table border="1" class="sortable" id="benutzer-tabelle">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Preis</th>
+					<th>Einheit</th>
+					<th>Beschreibung</th>
+					<th style="width:112px;"><span class="icon darkgray" data-icon="Z"></span></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Artikel 1</td>
+					<td>100.00</td>
+					<td>Tag</td>
+					<td>leer</td>
+					<td>edit2</td>
+				</tr>
+				<tr>
+					<td>Artikel 2</td>
+					<td>100.00</td>
+					<td>Tag</td>
+					<td>leer</td>
+					<td>edit</td>
+				</tr>
+				<tr>
+					<td>Artikel 3</td>
+					<td>100.00</td>
+					<td>Tag</td>
+					<td>leer</td>
+					<td>edit</td>
+				</tr>
+				<tr>
+					<td>Artikel 4</td>
+					<td>100.00</td>
+					<td>Tag</td>
+					<td>leer</td>
+					<td>edit</td>
+				</tr>
+				<tr>
+					<td>Artikel 5</td>
+					<td>100.00</td>
+					<td>Tag</td>
+					<td>leer</td>
+					<td>edit</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
             <!-- ===================================== START FOOTER ===================================== -->
             <div class="clear"></div>
             <div id="footer">
                 &copy; Copyright 2012 Verein zur Qualitäts-Controlle am Bau e.V. Diese WebApp wurde von <a href="http://www.scitotec.com">Scitotec GmbH</a> erstellt.
                 <a id="link-top" href="#top-of-page">Top</a>
             </div>
-        </div><!-- END WRAP -->
+</div><!-- END WRAP -->
     </body>
 </html>
