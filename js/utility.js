@@ -46,22 +46,20 @@ function KalenderWoche(j,m,t) {
 }
 
 function DynTable(TableDivID, ListBoxID, JSONobj,_checked){
-// auslesen der Spalten und definieren der Checkboxen
     var alltr=jQuery('#'+TableDivID+' table tr');
     jQuery(alltr).each( function(index,value){
       var allth=jQuery(this).find('th');
-      var container2 = "";
+      var container2 = '<ul class="menu vertical">';
       $(allth).each(function(cindex,value){
          container2 += '<li><input id="checkbox_'+index+'_'+cindex+'" type="checkbox" checked="checked" /><label for="checkbox_'+index+'_'+cindex+'" >'+$(this).text()+'</label></li>';
-         $('#'+TableDivID+' #'+ListBoxID+' ul').html(container2);
-		 $('#'+TableDivID+' #'+ListBoxID+' ul li:last-child').css('display','none')
-      });
+      	$('#'+TableDivID+' #'+ListBoxID).html(container2+'</ul>');
+		$('#'+TableDivID+' #'+ListBoxID+' ul li:last-child').css('display','none');
+	  });
     });
-    // ein und ausblenden der Spalten
+
     var allCBox = $('#'+TableDivID+' #'+ListBoxID+' ul li input');
     $(allCBox).each(function(cindex,value) {
         var pos = cindex+1;
-        //console.log(cindex+1);
         $(this).click(function (){
             $('th:nth-child('+pos+')').toggle();
             $('td:nth-child('+pos+')').toggle();
@@ -69,9 +67,8 @@ function DynTable(TableDivID, ListBoxID, JSONobj,_checked){
     });
 	
 	$('#'+TableDivID+' table th:last-child').bind('click',function(e){
-		var _left = $(this).position().left;
 		$('#'+TableDivID+' #'+ListBoxID+'').animate({
-			left:_left,
+			left:$(this).position().left,
 			top:$('#'+TableDivID+' table tr:eq(1) td:last-child').position().top,
 		},0);
 		$('#'+TableDivID+' #'+ListBoxID+'').toggle();
@@ -80,8 +77,7 @@ function DynTable(TableDivID, ListBoxID, JSONobj,_checked){
 
 	var timer;
 	$('#'+TableDivID+' #'+ListBoxID+' ul').bind('mouseout', function(){
-		if(timer)
-			clearTimeout(timer);
+		if(timer) clearTimeout(timer);
 		timer = setTimeout("$('#"+TableDivID+" #"+ListBoxID+"').toggle()",100);
 	});
 	$('#'+TableDivID+' #'+ListBoxID+' ul').bind('mouseover', function(){
@@ -102,6 +98,7 @@ function DynTable(TableDivID, ListBoxID, JSONobj,_checked){
 			_checked.push(_obj[JSONobj][index]);
 		}
 	}
+	
 	for(var i = 0 ; i< ($('#'+TableDivID+' #'+ListBoxID+' ul li input').length-1);i++){
 		var _temp = true;
 		for(var j = 0 ;j<_checked.length;j++)
@@ -122,8 +119,6 @@ function DynTable(TableDivID, ListBoxID, JSONobj,_checked){
 			}
 		}
 		var _JSON = JSON.stringify(_obj);
-		if(localStorage){
-			localStorage.setItem('vqc',_JSON);
-		}
+		if(localStorage) localStorage.setItem('vqc',_JSON);
 	});
 }

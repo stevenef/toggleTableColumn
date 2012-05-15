@@ -19,6 +19,7 @@
 	</script>
 </head>
 <body>
+
 <style>
 
 #column{
@@ -31,15 +32,11 @@
 	padding:5px;
 }
 </style>
-
-
 <script type="text/javascript">
 
 $(document).ready(function() {
 	DynTable('wrap','column','Benutzer_Controller', new Array(0,1));
-
 });
-
 
 </script> 
 
@@ -47,10 +44,7 @@ $(document).ready(function() {
  <a id="top-of-page"></a>
  <div id="wrap" class="clearfix" style="overflow:auto">
     <div class="col_12">
-		<div id="column" style="display:none;">
-			<ul class="menu vertical">
-			</ul>
-		</div>
+		<div id="column" style="display:none;"></div>
 
 		<table border="1" class="sortable" id="benutzer-tabelle">
 			<thead>
