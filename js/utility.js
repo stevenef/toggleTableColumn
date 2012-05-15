@@ -45,7 +45,7 @@ function KalenderWoche(j,m,t) {
     return kw;
 }
 
-function DynTable(TableDivID, ListBoxID, JSONobj){
+function DynTable(TableDivID, ListBoxID, JSONobj,_Standard){
 // auslesen der Spalten und definieren der Checkboxen
     var alltr=jQuery('#'+TableDivID+' table tr');
     jQuery(alltr).each( function(index,value){
@@ -89,7 +89,7 @@ function DynTable(TableDivID, ListBoxID, JSONobj){
 	});
 	
 	// Default werte für Tabs
-	var _checked = new Array(0,1);
+	var _checked = _Standard;
 	
 	var _obj = new Object();
 	if(localStorage){
