@@ -45,7 +45,7 @@ function KalenderWoche(j,m,t) {
     return kw;
 }
 
-function DynTable(TableDivID, ListBoxID, JSONobj,_Standard){
+function DynTable(TableDivID, ListBoxID, JSONobj,_checked){
 // auslesen der Spalten und definieren der Checkboxen
     var alltr=jQuery('#'+TableDivID+' table tr');
     jQuery(alltr).each( function(index,value){
@@ -53,12 +53,12 @@ function DynTable(TableDivID, ListBoxID, JSONobj,_Standard){
       var container2 = "";
       $(allth).each(function(cindex,value){
          container2 += '<li><input id="checkbox_'+index+'_'+cindex+'" type="checkbox" checked="checked" /><label for="checkbox_'+index+'_'+cindex+'" >'+$(this).text()+'</label></li>';
-         $('#'+ListBoxID+' ul').html(container2);
-		 $('#'+ListBoxID+' ul li:last-child').css('display','none')
+         $('#'+TableDivID+' #'+ListBoxID+' ul').html(container2);
+		 $('#'+TableDivID+' #'+ListBoxID+' ul li:last-child').css('display','none')
       });
     });
     // ein und ausblenden der Spalten
-    var allCBox = $('#'+ListBoxID+' ul li input');
+    var allCBox = $('#'+TableDivID+' #'+ListBoxID+' ul li input');
     $(allCBox).each(function(cindex,value) {
         var pos = cindex+1;
         //console.log(cindex+1);
@@ -70,27 +70,24 @@ function DynTable(TableDivID, ListBoxID, JSONobj,_Standard){
 	
 	$('#'+TableDivID+' table th:last-child').bind('click',function(e){
 		var _left = $(this).position().left;
-		$('#'+ListBoxID+'').animate({
+		$('#'+TableDivID+' #'+ListBoxID+'').animate({
 			left:_left,
 			top:$('#'+TableDivID+' table tr:eq(1) td:last-child').position().top,
 		},0);
-		$('#'+ListBoxID+'').toggle();
+		$('#'+TableDivID+' #'+ListBoxID+'').toggle();
 		return false;
 	});
 
 	var timer;
-	$('#'+ListBoxID+' ul').bind('mouseout', function(){
+	$('#'+TableDivID+' #'+ListBoxID+' ul').bind('mouseout', function(){
 		if(timer)
 			clearTimeout(timer);
-		timer = setTimeout("$('#"+ListBoxID+"').toggle()",100);
+		timer = setTimeout("$('#"+TableDivID+" #"+ListBoxID+"').toggle()",100);
 	});
-	$('#'+ListBoxID+' ul').bind('mouseover', function(){
+	$('#'+TableDivID+' #'+ListBoxID+' ul').bind('mouseover', function(){
 		clearTimeout(timer);
 	});
-	
-	// Default werte für Tabs
-	var _checked = _Standard;
-	
+
 	var _obj = new Object();
 	if(localStorage){
 		if(localStorage.getItem('vqc')){
@@ -105,7 +102,7 @@ function DynTable(TableDivID, ListBoxID, JSONobj,_Standard){
 			_checked.push(_obj[JSONobj][index]);
 		}
 	}
-	for(var i = 0 ; i< ($('#'+ListBoxID+' ul li input').length-1);i++){
+	for(var i = 0 ; i< ($('#'+TableDivID+' #'+ListBoxID+' ul li input').length-1);i++){
 		var _temp = true;
 		for(var j = 0 ;j<_checked.length;j++)
 			if(i==_checked[j]) _temp = false;
@@ -113,12 +110,12 @@ function DynTable(TableDivID, ListBoxID, JSONobj,_Standard){
 			$('#checkbox_0_'+i).trigger('click');
 	}
 	
-	$('#'+ListBoxID+' ul li input').bind('click',function(){
-		for(var i = 0; i < ($('#'+ListBoxID+' ul li input').length-1);i++){
-			var _id = $('#'+ListBoxID+' ul li input:eq('+i+')').attr('id');
+	$('#'+TableDivID+' #'+ListBoxID+' ul li input').bind('click',function(){
+		for(var i = 0; i < ($('#'+TableDivID+' #'+ListBoxID+' ul li input').length-1);i++){
+			var _id = $('#'+TableDivID+' #'+ListBoxID+' ul li input:eq('+i+')').attr('id');
 			if(!_obj[JSONobj])
 				_obj[JSONobj] = new Object();
-			if($('#'+ListBoxID+' ul li input:eq('+i+')').attr('checked')){
+			if($('#'+TableDivID+' #'+ListBoxID+' ul li input:eq('+i+')').attr('checked')){
 				_obj[JSONobj][_id]=i;
 			}else{
 				delete _obj[JSONobj][_id];
